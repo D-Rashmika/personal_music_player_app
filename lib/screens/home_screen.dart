@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
                   ),
-                  itemCount: 6,
+                  itemCount: 10,
                   itemBuilder: (context, index) {
                     return Container(
                       color: Colors.grey[800],
@@ -128,7 +128,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSpacing: 10.0,
                     mainAxisExtent: 150.0, // Wider album boxes
                   ),
-                  itemCount: 6,
+                  itemCount: 12,
                   itemBuilder: (context, index) {
                     return Container(
                       color: Colors.grey[800],
