@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_music_player_app/app/routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,6 +26,7 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.search, color: Colors.white, size: 30.0),
             onPressed: () {
               // Search functionality
+              Navigator.pushNamed(context, AppRoutes.search);
             },
           ),
         ],
