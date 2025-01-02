@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'playing_screen.dart'; // Import your PlayingScreen widget here
 
 class SearchScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
 
+  SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    // Temporary placeholder list for search results
+    final List<Map<String, String>> searchResults = [
+      {"songName": "Song 1", "artistName": "Artist 1", "albumArtUrl": "https://via.placeholder.com/300"},
+      {"songName": "Song 2", "artistName": "Artist 2", "albumArtUrl": "https://via.placeholder.com/300"},
+      {"songName": "Song 3", "artistName": "Artist 3", "albumArtUrl": "https://via.placeholder.com/300"},
+    ];
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -58,14 +68,47 @@ class SearchScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // Placeholder for future search history (currently empty)
+            // Search Results List
             Expanded(
-              child: Center(
-                child: Text(
-                  "No search history available",
-                  style: TextStyle(color: Colors.grey[600], fontSize: 16),
-                ),
-              ),
+              child: searchResults.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        final song = searchResults[index];
+                        return ListTile(
+                          onTap: () {
+                            // Navigate to PlayingScreen with song details
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PlayingScreen(
+                                  songName: song["songName"]!,
+                                  artistName: song["artistName"]!,
+                                  albumArtUrl: song["albumArtUrl"]!,
+                                ),
+                              ),
+                            );
+                          },
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(song["albumArtUrl"]!),
+                          ),
+                          title: Text(
+                            song["songName"]!,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            song["artistName"]!,
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        "No search results available",
+                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      ),
+                    ),
             ),
           ],
         ),
