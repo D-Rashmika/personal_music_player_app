@@ -1,147 +1,155 @@
 import 'package:flutter/material.dart';
-import 'package:personal_music_player_app/app/routes.dart';
+import 'package:personal_music_player_app/screens/playing_screen.dart';
+import 'package:personal_music_player_app/screens/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
+
+  void navigateToPlayingScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PlayingScreen(songName: '', artistName: '', albumArtUrl: '',),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 28, 25, 25),
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text(
-            'Rylix',
-            style: const TextStyle(color: Colors.white, fontSize: 25.0),
-            textAlign: TextAlign.left,
-          ),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Rylix',
+          style: TextStyle(color: Colors.white, fontSize: 25.0),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white, size: 30.0),
             onPressed: () {
-              // Search functionality
-              Navigator.pushNamed(context, AppRoutes.search);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ),
+              );
             },
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Recently Played Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Recently Played',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Play All Recently Played
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 26, 23, 23),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Play All',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                    ),
-                  ),
-                ],
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  'Recently Played',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                ),
               ),
-              const SizedBox(height: 10.0),
               SizedBox(
-                height: screenHeight * 0.3, // Dynamic height based on screen
+                height: 260, // Adjusted height for spacing
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
+                    crossAxisCount: 2, // Two rows
+                    childAspectRatio: 1.1, // Adjusted box size
+                    mainAxisSpacing: 15.0, // Space between boxes horizontally
+                    crossAxisSpacing: 15.0, // Space between boxes vertically
                   ),
-                  itemCount: 10,
+                  itemCount: 12, // 6 columns * 2 rows
                   itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.grey[800],
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.music_note, color: Colors.white, size: 40.0),
-                          SizedBox(height: 5.0),
-                          Text('Song Name', style: TextStyle(color: Colors.white, fontSize: 14.0)),
-                          Text('Artist Name', style: TextStyle(color: Colors.grey, fontSize: 12.0)),
-                        ],
+                    return GestureDetector(
+                      onTap: () => navigateToPlayingScreen(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[800], // Placeholder background color
+                          borderRadius: BorderRadius.circular(12.0), // Rounded edges
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0), // Padding inside the box
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.music_note, size: 40, color: Colors.white),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Song Name',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 5),
+                              const Text(
+                                'Artist Name',
+                                style: TextStyle(color: Colors.grey, fontSize: 10),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
               ),
 
-              const SizedBox(height: 20.0),
-
               // Albums for You Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Albums for You',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Play All Albums
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 26, 23, 23),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: const Text(
-                      'Play All',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                    ),
-                  ),
-                ],
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                child: Text(
+                  'Albums for You',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                ),
               ),
-              const SizedBox(height: 10.0),
               SizedBox(
-                height: screenHeight * 0.4, // Dynamic height for larger album boxes
+                height: 300, // Adjusted height for spacing
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    mainAxisExtent: 150.0, // Wider album boxes
+                    crossAxisCount: 2, // Two rows
+                    childAspectRatio: 1.0, // Adjusted box size
+                    mainAxisSpacing: 20.0, // Space between boxes horizontally
+                    crossAxisSpacing: 20.0, // Space between boxes vertically
                   ),
-                  itemCount: 12,
+                  itemCount: 12, // 6 columns * 2 rows
                   itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.grey[800],
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.album, color: Colors.white, size: 50.0),
-                          SizedBox(height: 5.0),
-                          Text('Album Name', style: TextStyle(color: Colors.white, fontSize: 14.0)),
-                          Text('Artist Name', style: TextStyle(color: Colors.grey, fontSize: 12.0)),
-                        ],
+                    return GestureDetector(
+                      onTap: () => navigateToPlayingScreen(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[800], // Placeholder background color
+                          borderRadius: BorderRadius.circular(12.0), // Rounded edges
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0), // Padding inside the box
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.album, size: 50, color: Colors.white),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Album Name',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 5),
+                              const Text(
+                                'Artist Name',
+                                style: TextStyle(color: Colors.grey, fontSize: 10),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
